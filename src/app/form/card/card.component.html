@@ -1,0 +1,41 @@
+<div class="flex-container">
+    <div class="row no-gutters">
+        <div class="col">
+            <div class="row">
+                <h1 class="col-12 form-title">Estás a un paso de una gran experiencia</h1>
+                <p  class="col-12 form-slogan">Introduce tu tarjeta</p>
+            </div>
+            <div class="row">
+                <!-- Número de tarjeta -->
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" maxlength="16" placeholder="Introduce tu número de tarjeta">
+                    </div>
+                </div>
+                <!-- Subcampos de la tarjeta -->
+                <div class="col-12">
+                    <div class="form-row">
+                        <div class="col">
+                            <select name="" id="" class="dropdown col-12">
+                                <option *ngFor="let month of months" value="{{month.value}}"> {{month.name}} </option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select name="" id="" class="dropdown col-12">
+                                <option *ngFor="let year of years" value="{{year.value}}"> {{year.name}} </option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" maxlength="4" placeholder="CVC">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12" style="margin-top: 1em;">
+                    <!--(click)="setData()"-->
+                    <button class="btn btn-primary">Insertar datos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
