@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-card',
@@ -25,7 +26,14 @@ export class CardComponent implements OnInit {
 
   public years = []
 
-  constructor() { }
+  public cardForm = this.fb.group({
+    number : [''],
+    month  : [''],
+    year   : [''],
+    cvc    : [''] 
+  })
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.getYearExpirationDates();
