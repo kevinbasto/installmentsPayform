@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "installmentsPayform"
+    }
+  },
+  "defaultProject": "installmentsPayform",
+  "cli": {
+    "analytics": "5041aeb0-ac9a-48da-a142-5a4403640155"
+  }
 }
