@@ -1,6 +1,7 @@
 <div class="flex-container">
     <div class="row no-gutters" *ngIf="!response && !succeded">
-        <div class="col">
+        <h1 class="col-12 form-slogan" *ngIf="invalidPrice">Error: no hay un precio estipulado</h1>
+        <div class="col" *ngIf="!invalidPrice">
             <div class="row">
                 <h1 class="col-12 form-title">Estás a un paso de una gran experiencia</h1>
                 <p  class="col-12 form-slogan">Introduce tu tarjeta</p>
@@ -10,39 +11,46 @@
                     <!-- Número de tarjeta -->
                     <div class="col-12">
                         <div class="form-group">
-                            <input type="text" class="form-control" maxlength="16" placeholder="Introduce tu número de tarjeta" formControlName="number">
+                            <input type="text" class="form-control" maxlength="16" placeholder="Introduce tu número de tarjeta" formControlName="number" [ngClass]="check('number')? 'valid' : 'invalid'">
+                            <label [ngClass]="check('number')? 'hidden-label' : 'error-label' ">Por favor, rellena el campo de número de Tarjeta</label>
                         </div>
                     </div>
                     <!-- Subcampos de la tarjeta -->
                     <div class="col-12">
                         <div class="form-row">
                             <div class="col">
-                                <input type="text" class="form-control" maxlength="2" placeholder="MM" formControlName="month">
+                                <input type="text" class="form-control" maxlength="2" placeholder="MM" formControlName="month" [ngClass]="check('month')? 'valid' : 'invalid'">
+                                <label [ngClass]="check('month')? 'hidden-label' : 'error-label' ">Por favor, rellena el campo de mes</label>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" maxlength="4" placeholder="YYYY" formControlName="year">
+                                <input type="text" class="form-control" maxlength="4" placeholder="YYYY" formControlName="year" [ngClass]="check('year')? 'valid' : 'invalid'">
+                                <label [ngClass]="check('year')? 'hidden-label' : 'error-label' ">Por favor, rellena el campo de año</label>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" maxlength="3" placeholder="CVC" formControlName="cvc">
+                                <input type="text" class="form-control" maxlength="3" placeholder="CVC" formControlName="cvc" [ngClass]="check('cvc')? 'valid' : 'invalid'">
+                                <label [ngClass]="check('cvc')? 'hidden-label' : 'error-label' ">Por favor, rellena el campo de cvc</label>
                             </div>
                         </div>
                     </div>
-                </form>
 
-                <div class="col-12" style="margin-top: 1em;">
-                    <!--(click)="setData()"-->
-                    <button class="btn btn-primary" (click)="setData()">Insertar datos</button>
-                </div>
+                    <div class="error-body" *ngIf="error">
+                        <h4 class="error-title">Hubo un problema para procesar tu tarjeta</h4>
+                        <p class="error-message">{{error}}</p>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <div class="row no-gutters" *ngIf="response && !succeded">
         <div class="col-12">
-            <h1 style="text-align: center">Selecctiona tu plan</h1>
+            <h1 style="text-align: center">Selecciona tu plan</h1>
         </div>
         <div class="col-12">
             <input type="radio" name="monthselector" (click)="confirm({ count: 0, interval: 'none', 'type' : 'direct'})"> Pago de contado
+        </div>
+        <div class="col-12" *ngIf="plans.length == 0">
+            <p>(Tu tarjeta no participa para aplicar a meses sin intereses)</p>
         </div>
         <div class="col-12" *ngFor="let plan of plans">
             <input type="radio" name="monthselector" (click)="confirm(plan)"> {{plan.count}} Meses sin intereses

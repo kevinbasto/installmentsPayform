@@ -20,3 +20,57 @@
 option{
     text-align: center;
 }
+
+.form{
+    height: 100vh;
+}
+
+
+.header{
+    margin-bottom: 4em;
+}
+
+.title{
+    text-align: center;
+    
+}
+
+.slogan{
+    text-align: center;
+    font-weight: bold;
+}
+
+.invalid{
+    border: 1px red solid;
+}
+
+.valid{
+    border: 1px black solid;
+}
+
+.error-label{
+    display: flex;
+    color: red;
+}
+
+.hidden-label{
+    display: none;
+}
+
+.error-body{
+    margin-top: 1em;
+}
+
+.error-title{
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 30px;
+    color: red;
+}
+
+.error-message{
+    text-align: center;
+    font-size: 16px;
+    color: red;
+}

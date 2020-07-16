@@ -10,8 +10,10 @@ export class PayService {
 
   getplans(body){
     return new Promise((resolve) => {
+      //let url = "./api/";
       let url = "http://localhost/work/installments/api/";
       this.http.post(url, body).subscribe(res => {
+        console.log(res);
         resolve(res);
       });
     });
@@ -19,6 +21,7 @@ export class PayService {
 
   confirm(plan, id){
     return new Promise(resolve => {
+      //let url = "./api/";
       let url = "http://localhost/work/installments/api/";
       let body = {
         type: 'confirm',

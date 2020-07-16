@@ -13,26 +13,35 @@ export class CardComponent implements OnInit {
   public plans = [];
   public id;
   public succeded;
+  public invalidPrice;
+  public error;
+  public months;
 
   public cardForm = this.fb.group({
-    number : [''],
-    month  : [''],
-    year   : [''],
-    cvc    : [''] 
+    number : ['', [Validators.required]],
+    month  : ['', [Validators.required]],
+    year   : ['', [Validators.required]],
+    cvc    : ['', [Validators.required]] 
   })
 
   constructor(private fb: FormBuilder, private ps: PayService) { }
 
   ngOnInit(): void {
-    this.validateFields();
-    let amount = 3000;
 
-    this.cardForm.valueChanges.subscribe(value => {
-      if(value.number.length == 16 && value.month.length == 2 && value.year.length == 4 && value.cvc.length == 3){
-        
-        this.getPlans(value, amount);
-      }
-    });
+    let amount = this.getAmount();
+
+    if(amount){
+      this.cardForm.valueChanges.subscribe(value => {
+        this.validateFields();    
+        if(value.number.length == 16 && value.month.length == 2 && value.year.length == 4 && value.cvc.length == 3){
+          this.getPlans(value, amount);
+        }
+      });
+    }else{
+      this.invalidPrice = true;
+    }
+
+    
   }
 
   validateFields(){
@@ -48,14 +57,7 @@ export class CardComponent implements OnInit {
     }
   }
 
-  setData(){
-    this.cardForm.controls['number'].setValue("4000004840000008");
-    this.cardForm.controls['month'].setValue("05");
-    this.cardForm.controls['year'].setValue("2025");
-    this.cardForm.controls['cvc'].setValue("672");
-  }
-
-  async getPlans(value : any, amount: number){
+  async getPlans(value : any, amount){
     let body = {
       type : "generate",
       data : {
@@ -63,17 +65,50 @@ export class CardComponent implements OnInit {
         card : value
       }
     }
+    console.log("lorem");
     let plans : any = await this.ps.getplans(body);
-    this.response = plans;
-    this.id = plans.Message.id;
-    this.plans = plans.Message.plans;
+    
+    if(plans.Message.id){
+      this.response = plans;
+      this.id = plans.Message.id;
+      //this.plans = plans.Message.plans;
+      plans.Message.plans.forEach(element => {
+        for(let i = 0; i<this.months.length; i++){
+          if(element.count == this.months[i]){
+            this.plans.push(element);
+          }
+        }
+      });
+    }else{
+      this.error = plans.Message;
+    }
+    
   }
 
   async confirm(plan){
     let res : any = await this.ps.confirm(plan, this.id);
-    console.log(res);
     if(res.Title = "Pago a meses sin intereses concluido satisfactoriamente"){
       this.succeded = true;
     }
   }
+
+  getAmount(){
+    let urlParams = new URLSearchParams(window.location.search);
+    let amount = urlParams.get("price");
+    let months = urlParams.get("installments");
+    this.months = months;
+    return amount;
+  }
+
+  /**
+   * @function validateFields
+   * funcion que verifica que los campos estén bien
+   */
+  check(field: string){
+    if( this.cardForm.get(field).hasError('required') && this.cardForm.get(field).touched ){
+      return false;
+    }
+    return true;
+  }
+
 }
