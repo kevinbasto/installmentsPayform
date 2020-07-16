@@ -1,5 +1,5 @@
 <div class="flex-container">
-    <div class="row no-gutters">
+    <div class="row no-gutters" *ngIf="!response && !succeded">
         <div class="col">
             <div class="row">
                 <h1 class="col-12 form-title">Estás a un paso de una gran experiencia</h1>
@@ -10,24 +10,20 @@
                     <!-- Número de tarjeta -->
                     <div class="col-12">
                         <div class="form-group">
-                            <input type="text" class="form-control" maxlength="16" placeholder="Introduce tu número de tarjeta">
+                            <input type="text" class="form-control" maxlength="16" placeholder="Introduce tu número de tarjeta" formControlName="number">
                         </div>
                     </div>
                     <!-- Subcampos de la tarjeta -->
                     <div class="col-12">
                         <div class="form-row">
                             <div class="col">
-                                <select name="" id="" class="dropdown col-12">
-                                    <option *ngFor="let month of months" value="{{month.value}}"> {{month.name}} </option>
-                                </select>
+                                <input type="text" class="form-control" maxlength="2" placeholder="MM" formControlName="month">
                             </div>
                             <div class="col">
-                                <select name="" id="" class="dropdown col-12">
-                                    <option *ngFor="let year of years" value="{{year.value}}"> {{year.name}} </option>
-                                </select>
+                                <input type="text" class="form-control" maxlength="4" placeholder="YYYY" formControlName="year">
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" maxlength="4" placeholder="CVC">
+                                <input type="text" class="form-control" maxlength="3" placeholder="CVC" formControlName="cvc">
                             </div>
                         </div>
                     </div>
@@ -35,9 +31,27 @@
 
                 <div class="col-12" style="margin-top: 1em;">
                     <!--(click)="setData()"-->
-                    <button class="btn btn-primary">Insertar datos</button>
+                    <button class="btn btn-primary" (click)="setData()">Insertar datos</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row no-gutters" *ngIf="response && !succeded">
+        <div class="col-12">
+            <h1 style="text-align: center">Selecctiona tu plan</h1>
+        </div>
+        <div class="col-12">
+            <input type="radio" name="monthselector" (click)="confirm({ count: 0, interval: 'none', 'type' : 'direct'})"> Pago de contado
+        </div>
+        <div class="col-12" *ngFor="let plan of plans">
+            <input type="radio" name="monthselector" (click)="confirm(plan)"> {{plan.count}} Meses sin intereses
+        </div>
+    </div>
+
+    <div class="row no-gutters" *ngIf="response && succeded">
+        <div class="col-12">
+            <h1 style="text-align: center;">Gracias por tu compra</h1>
         </div>
     </div>
 </div>
