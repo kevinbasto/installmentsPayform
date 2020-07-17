@@ -58,8 +58,12 @@
     </div>
 
     <div class="row no-gutters" *ngIf="response && succeded">
-        <div class="col-12">
+        <div class="col-12" *ngIf="!confirmError">
             <h1 style="text-align: center;">Gracias por tu compra</h1>
+        </div>
+        <div class="col-12" *ngIf="confirmError">
+            <h1 class="col-12"  style="text-align: center;">Hubo un problema para cerrar la compra</h1>
+            <p  class="col-12" style="text-align: center;">{{confirmError}}</p>
         </div>
     </div>
 </div>

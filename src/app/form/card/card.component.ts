@@ -16,7 +16,7 @@ export class CardComponent implements OnInit {
   public invalidPrice;
   public error;
   public months;
-  //public failed;
+  public confirmError;
 
   public cardForm = this.fb.group({
     number : ['', [Validators.required]],
@@ -73,13 +73,23 @@ export class CardComponent implements OnInit {
       this.response = plans;
       this.id = plans.Message.id;
       //this.plans = plans.Message.plans;
-      plans.Message.plans.forEach(element => {
-        for(let i = 0; i<this.months.length; i++){
-          if(element.count == this.months[i]){
-            this.plans.push(element);
+
+      if(this.months > 0){
+        plans.Message.plans.forEach(element => {
+          for(let i = 0; i<this.months.length; i++){
+            if(element.count == this.months[i]){
+              this.plans.push(element);
+            }
           }
-        }
-      });
+        });
+      }else{
+        plans.Message.plans.forEach(element => {  
+          this.plans.push(element);
+        });
+      }
+      
+
+
     }else{
       this.error = plans.Message;
     }
@@ -88,8 +98,13 @@ export class CardComponent implements OnInit {
 
   async confirm(plan){
     let res : any = await this.ps.confirm(plan, this.id);
-    if(res.Title = "Pago a meses sin intereses concluido satisfactoriamente"){
-      this.succeded = true;
+    console.log(res);
+    console.log(res.Title == "Pago a meses sin intereses concluido satisfactoriamente");
+    if(res.Title == "Pago a meses sin intereses concluido satisfactoriamente"){
+      this.succeded = true;  
+    }else{
+      this.succeded = true;  
+      this.confirmError = res.Message;
     }
   }
 
@@ -97,8 +112,9 @@ export class CardComponent implements OnInit {
     let urlParams = new URLSearchParams(window.location.search);
     let amount = urlParams.get("price");
     let months = urlParams.get("installments");
-    this.months = months.split(",");
-    console.log(this.months);
+    if(months){
+      this.months = months.split(",");
+    }
     return amount;
   }
 
