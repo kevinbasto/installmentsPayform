@@ -16,6 +16,7 @@ export class CardComponent implements OnInit {
   public invalidPrice;
   public error;
   public months;
+  //public failed;
 
   public cardForm = this.fb.group({
     number : ['', [Validators.required]],
@@ -96,7 +97,8 @@ export class CardComponent implements OnInit {
     let urlParams = new URLSearchParams(window.location.search);
     let amount = urlParams.get("price");
     let months = urlParams.get("installments");
-    this.months = months;
+    this.months = months.split(",");
+    console.log(this.months);
     return amount;
   }
 
